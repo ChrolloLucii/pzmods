@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pz-mod-sync"
+version = "0.1.0"
+description = "Project Zomboid mod synchronization via SteamCMD"
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [{ name = "pz-mod-sync contributors" }]
+dependencies = []
+
+[project.scripts]
+pzmods = "pz_mod_sync.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["pz_mod_sync*"]
