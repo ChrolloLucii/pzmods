@@ -92,7 +92,10 @@ pzmods add-workshop-item --manifest sample-manifest/collection.json --item "http
 ```powershell
 pzmods generate-manifest --out sample-manifest/from-installed.json
 ```
-
+4. Засинковать моды:
+```powershell
+.\pzmods.cmd sync --manifest "sample-manifest\pz-modpack.json" --steamcmd "D:\steamcmd\steamcmd.exe" --steam-user ВАШ_ЛОГИН_STEAM
+```
 ## Примечания
 
 - По умолчанию используется режим установки `copy` (чтобы избежать проблем с правами на symlink в Windows).
