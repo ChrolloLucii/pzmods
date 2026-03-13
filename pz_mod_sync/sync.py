@@ -28,6 +28,7 @@ def run_sync(
     install_mode: str,
     logger: logging.Logger,
     download_mode: str = "always",
+    steamcmd_admin: bool = False,
 ) -> SyncReport:
     report = SyncReport()
 
@@ -48,6 +49,7 @@ def run_sync(
             app_id=manifest.steamcmd.app_id,
             items=items_to_download,
             steam_username=steam_username,
+            run_as_admin=steamcmd_admin,
         )
         report.downloaded_items = [item.publishedfileid for item in items_to_download]
     else:

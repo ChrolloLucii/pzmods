@@ -38,6 +38,11 @@ def build_parser() -> argparse.ArgumentParser:
         default="always",
         help="SteamCMD behavior: always update all, only missing items, or skip download step",
     )
+    sync_cmd.add_argument(
+        "--steamcmd-admin",
+        action="store_true",
+        help="Run SteamCMD with Windows UAC elevation (Run as Administrator)",
+    )
 
     validate_cmd = sub.add_parser("validate", help="Validate required ModIDs are present")
     validate_cmd.add_argument("--manifest", required=True, help="Manifest path or HTTPS URL")
@@ -121,6 +126,7 @@ def cmd_sync(args: argparse.Namespace) -> int:
         install_mode=install_mode,
         logger=logger,
         download_mode=args.download_mode,
+        steamcmd_admin=bool(args.steamcmd_admin),
     )
 
     config.steamcmd_path = str(steamcmd)
