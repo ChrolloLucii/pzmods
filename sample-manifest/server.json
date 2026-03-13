@@ -1,0 +1,451 @@
+{
+  "version": "1",
+  "name": "Generated from installed mods",
+  "updated_at": "2026-03-13",
+  "steamcmd": {
+    "app_id": 108600,
+    "workshop_items": [
+      {
+        "publishedfileid": "2409333430",
+        "display_name": "Workshop Item 2409333430"
+      },
+      {
+        "publishedfileid": "2566953935",
+        "display_name": "Workshop Item 2566953935"
+      },
+      {
+        "publishedfileid": "2625625421",
+        "display_name": "Workshop Item 2625625421"
+      },
+      {
+        "publishedfileid": "2642541073",
+        "display_name": "Workshop Item 2642541073"
+      },
+      {
+        "publishedfileid": "2772575623",
+        "display_name": "Workshop Item 2772575623"
+      },
+      {
+        "publishedfileid": "2805630347",
+        "display_name": "Workshop Item 2805630347"
+      },
+      {
+        "publishedfileid": "2840805724",
+        "display_name": "Workshop Item 2840805724"
+      },
+      {
+        "publishedfileid": "2846036306",
+        "display_name": "Workshop Item 2846036306"
+      },
+      {
+        "publishedfileid": "2870394916",
+        "display_name": "Workshop Item 2870394916"
+      },
+      {
+        "publishedfileid": "2897390033",
+        "display_name": "Workshop Item 2897390033"
+      },
+      {
+        "publishedfileid": "2900580391",
+        "display_name": "Workshop Item 2900580391"
+      },
+      {
+        "publishedfileid": "2932549988",
+        "display_name": "Workshop Item 2932549988"
+      },
+      {
+        "publishedfileid": "2937786633",
+        "display_name": "Workshop Item 2937786633"
+      },
+      {
+        "publishedfileid": "2942793445",
+        "display_name": "Workshop Item 2942793445"
+      },
+      {
+        "publishedfileid": "2952802178",
+        "display_name": "Workshop Item 2952802178"
+      },
+      {
+        "publishedfileid": "2962175696",
+        "display_name": "Workshop Item 2962175696"
+      },
+      {
+        "publishedfileid": "2969343830",
+        "display_name": "Workshop Item 2969343830"
+      },
+      {
+        "publishedfileid": "2971246021",
+        "display_name": "Workshop Item 2971246021"
+      },
+      {
+        "publishedfileid": "3005903549",
+        "display_name": "Workshop Item 3005903549"
+      },
+      {
+        "publishedfileid": "3008795514",
+        "display_name": "Workshop Item 3008795514"
+      },
+      {
+        "publishedfileid": "3026723485",
+        "display_name": "Workshop Item 3026723485"
+      },
+      {
+        "publishedfileid": "3034636011",
+        "display_name": "Workshop Item 3034636011"
+      },
+      {
+        "publishedfileid": "3041122351",
+        "display_name": "Workshop Item 3041122351"
+      },
+      {
+        "publishedfileid": "3052360250",
+        "display_name": "Workshop Item 3052360250"
+      },
+      {
+        "publishedfileid": "3073430075",
+        "display_name": "Workshop Item 3073430075"
+      },
+      {
+        "publishedfileid": "3088951320",
+        "display_name": "Workshop Item 3088951320"
+      },
+      {
+        "publishedfileid": "3110913021",
+        "display_name": "Workshop Item 3110913021"
+      },
+      {
+        "publishedfileid": "3152529790",
+        "display_name": "Workshop Item 3152529790"
+      },
+      {
+        "publishedfileid": "3161951724",
+        "display_name": "Workshop Item 3161951724"
+      },
+      {
+        "publishedfileid": "3171167894",
+        "display_name": "Workshop Item 3171167894"
+      },
+      {
+        "publishedfileid": "3196180339",
+        "display_name": "Workshop Item 3196180339"
+      },
+      {
+        "publishedfileid": "3213391371",
+        "display_name": "Workshop Item 3213391371"
+      },
+      {
+        "publishedfileid": "3226885926",
+        "display_name": "Workshop Item 3226885926"
+      },
+      {
+        "publishedfileid": "3253385114",
+        "display_name": "Workshop Item 3253385114"
+      },
+      {
+        "publishedfileid": "3258343790",
+        "display_name": "Workshop Item 3258343790"
+      },
+      {
+        "publishedfileid": "3287727378",
+        "display_name": "Workshop Item 3287727378"
+      },
+      {
+        "publishedfileid": "3292659291",
+        "display_name": "Workshop Item 3292659291"
+      },
+      {
+        "publishedfileid": "3315443103",
+        "display_name": "Workshop Item 3315443103"
+      },
+      {
+        "publishedfileid": "3320947974",
+        "display_name": "Workshop Item 3320947974"
+      },
+      {
+        "publishedfileid": "3330403100",
+        "display_name": "Workshop Item 3330403100"
+      },
+      {
+        "publishedfileid": "3346905070",
+        "display_name": "Workshop Item 3346905070"
+      },
+      {
+        "publishedfileid": "3366300557",
+        "display_name": "Workshop Item 3366300557"
+      },
+      {
+        "publishedfileid": "3379334330",
+        "display_name": "Workshop Item 3379334330"
+      },
+      {
+        "publishedfileid": "3409143790",
+        "display_name": "Workshop Item 3409143790"
+      },
+      {
+        "publishedfileid": "3409287192",
+        "display_name": "Workshop Item 3409287192"
+      },
+      {
+        "publishedfileid": "3413704851",
+        "display_name": "Workshop Item 3413704851"
+      },
+      {
+        "publishedfileid": "3413706334",
+        "display_name": "Workshop Item 3413706334"
+      },
+      {
+        "publishedfileid": "3414634809",
+        "display_name": "Workshop Item 3414634809"
+      },
+      {
+        "publishedfileid": "3418252689",
+        "display_name": "Workshop Item 3418252689"
+      },
+      {
+        "publishedfileid": "3418253716",
+        "display_name": "Workshop Item 3418253716"
+      },
+      {
+        "publishedfileid": "3428008364",
+        "display_name": "Workshop Item 3428008364"
+      },
+      {
+        "publishedfileid": "3429790870",
+        "display_name": "Workshop Item 3429790870"
+      },
+      {
+        "publishedfileid": "3431734923",
+        "display_name": "Workshop Item 3431734923"
+      },
+      {
+        "publishedfileid": "3435796523",
+        "display_name": "Workshop Item 3435796523"
+      },
+      {
+        "publishedfileid": "3447272250",
+        "display_name": "Workshop Item 3447272250"
+      },
+      {
+        "publishedfileid": "3478633453",
+        "display_name": "Workshop Item 3478633453"
+      },
+      {
+        "publishedfileid": "3490370700",
+        "display_name": "Workshop Item 3490370700"
+      },
+      {
+        "publishedfileid": "3504401781",
+        "display_name": "Workshop Item 3504401781"
+      },
+      {
+        "publishedfileid": "3539691958",
+        "display_name": "Workshop Item 3539691958"
+      },
+      {
+        "publishedfileid": "3543229299",
+        "display_name": "Workshop Item 3543229299"
+      },
+      {
+        "publishedfileid": "3564950449",
+        "display_name": "Workshop Item 3564950449"
+      },
+      {
+        "publishedfileid": "3566868353",
+        "display_name": "Workshop Item 3566868353"
+      },
+      {
+        "publishedfileid": "3570973322",
+        "display_name": "Workshop Item 3570973322"
+      },
+      {
+        "publishedfileid": "3592777775",
+        "display_name": "Workshop Item 3592777775"
+      },
+      {
+        "publishedfileid": "3596903773",
+        "display_name": "Workshop Item 3596903773"
+      },
+      {
+        "publishedfileid": "3600401184",
+        "display_name": "Workshop Item 3600401184"
+      },
+      {
+        "publishedfileid": "3614034284",
+        "display_name": "Workshop Item 3614034284"
+      },
+      {
+        "publishedfileid": "3631989559",
+        "display_name": "Workshop Item 3631989559"
+      },
+      {
+        "publishedfileid": "3635591071",
+        "display_name": "Workshop Item 3635591071"
+      },
+      {
+        "publishedfileid": "3635856965",
+        "display_name": "Workshop Item 3635856965"
+      },
+      {
+        "publishedfileid": "3642935062",
+        "display_name": "Workshop Item 3642935062"
+      },
+      {
+        "publishedfileid": "3647735736",
+        "display_name": "Workshop Item 3647735736"
+      },
+      {
+        "publishedfileid": "3647736504",
+        "display_name": "Workshop Item 3647736504"
+      },
+      {
+        "publishedfileid": "3652371248",
+        "display_name": "Workshop Item 3652371248"
+      },
+      {
+        "publishedfileid": "3670063857",
+        "display_name": "Workshop Item 3670063857"
+      },
+      {
+        "publishedfileid": "3670064951",
+        "display_name": "Workshop Item 3670064951"
+      },
+      {
+        "publishedfileid": "3679880253",
+        "display_name": "Workshop Item 3679880253"
+      },
+      {
+        "publishedfileid": "3616536783",
+        "display_name": "Tomb's Wardrobe - Alternative"
+      },
+      {
+        "publishedfileid": "2850935956",
+        "display_name": "Boots Expanded 11 for B41 and B42"
+      },
+      {
+        "publishedfileid": "2812326159",
+        "display_name": "Spongie's Open Jackets"
+      },
+      {
+        "publishedfileid": "2335368829",
+        "display_name": "Authentic Z"
+      },
+      {
+        "publishedfileid": "2122265954",
+        "display_name": "Scrap Weapons!"
+      }
+    ]
+  },
+  "project_zomboid": {
+    "mods_to_enable": [
+      "04vwTouran",
+      "49powerWagon",
+      "59meteor",
+      "63beetle",
+      "63Type2Van",
+      "65banshee",
+      "66pontiacLeMans",
+      "67gt500",
+      "68firebird",
+      "69charger",
+      "69mini",
+      "69mini_ItalianJob",
+      "69mini_MrBean",
+      "69mini_PitbullSpecial",
+      "70fordEscort",
+      "70roadRunner",
+      "73fordFalcon",
+      "73fordFalconPS",
+      "75grandPrix",
+      "76chevyKseries",
+      "77firebird",
+      "81deloreanDMC12",
+      "81deloreanDMC12BTTF",
+      "82firebird",
+      "82firebirdKITT",
+      "82porsche911",
+      "84buickElectra",
+      "84cadillacDeVille",
+      "84jeepXJ",
+      "84merc",
+      "85buickLeSabre",
+      "85chevyCaprice",
+      "85chevyStepVan",
+      "85chevyStepVanexpanded",
+      "85oldsmobileDelta88",
+      "85pontiacParisienne",
+      "86chevyCUCV",
+      "86fordE150",
+      "86fordE150dnd",
+      "86fordE150expanded",
+      "86fordE150mm",
+      "86fordE150pd",
+      "86oshkoshP19A",
+      "87buickRegal",
+      "87chevySuburban",
+      "87toyotaMR2",
+      "88toyotaHilux",
+      "89defender",
+      "89dodgeCaravan",
+      "89trooper",
+      "89volvo200",
+      "90bmwE30",
+      "90fordF350ambulance",
+      "90pierceArrow",
+      "91fordLTD",
+      "91fordRanger",
+      "91geoMetro",
+      "91nissan240sx",
+      "91range",
+      "92amgeneralM998",
+      "92amgeneralM998extra",
+      "92fordCVPI",
+      "92jeepYJ",
+      "92jeepYJJP18",
+      "92nissanGTR",
+      "93chevySuburban",
+      "93chevySuburbanExpanded",
+      "93fordElgin",
+      "93fordF350",
+      "93fordTaurus",
+      "95impreza",
+      "96lancerEVO",
+      "96saturnSseries",
+      "97bushmaster",
+      "98stagea",
+      "99fordCVPI",
+      "better-auto-mechanics",
+      "damnlib",
+      "ECTO1",
+      "isoContainers",
+      "KI5campers",
+      "KI5trailers",
+      "lockMartM577",
+      "PROJECTRVInterior42",
+      "ProjectSummerCar",
+      "RC_RealisticColdMod",
+      "RealisticDash",
+      "SapphCooking_B42",
+      "SimpleOverhaulTraitsAndOccupations",
+      "SPNCC",
+      "SPNCCDetails",
+      "SPNCCDetailsHD",
+      "SPNCCFaces",
+      "SpnCharCustom",
+      "SpnCharCustomDetails",
+      "SpnCharCustomDetailsHD",
+      "SpnCharCustomFaces",
+      "TombBody",
+      "TombBodyCompat",
+      "TombBodyCompatBootsExp",
+      "TombBodyCustom",
+      "TombBodyTex",
+      "TombBodyTexDOLL",
+      "TombBodyTexNUDE"
+    ]
+  },
+  "install": {
+    "mode": "copy",
+    "pz_user_dir_override": "",
+    "allow_extra_local_mods": true
+  }
+}

@@ -60,13 +60,14 @@ pzmods doctor
 ## Команды
 
 ```text
-pzmods sync --manifest <path_or_url> [--steamcmd <path>] [--steam-user <name>] [--pzdir <path>] [--cache <path>] [--install-mode copy|symlink]
+pzmods sync --manifest <path_or_url> [--steamcmd <path>] [--steam-user <name>] [--pzdir <path>] [--cache <path>] [--install-mode copy|symlink] [--download-mode always|missing-only|none]
 pzmods validate --manifest <path_or_url> [--pzdir <path>]
 pzmods doctor [--steamcmd <path>] [--pzdir <path>]
 pzmods print-paths
 pzmods parse-collection --collection <url_or_id> [--out pz-modpack.generated.json] [--name "..."]
 pzmods add-workshop-item --manifest <local_manifest.json> --item <workshop_url_or_id>
-pzmods generate-manifest [--out pz-modpack.from-installed.json] [--name "..."] [--pzdir <path>] [--cache <path>] [--app-id 108600]
+pzmods merge-collection --manifest <local_manifest.json> --collection <url_or_id>
+pzmods generate-manifest [--out pz-modpack.from-installed.json] [--name "..."] [--pzdir <path>] [--cache <path>] [--app-id 108600] [--include-unmatched-modids]
 ```
 
 ## Формат манифеста
@@ -87,20 +88,34 @@ pzmods parse-collection --collection "https://steamcommunity.com/workshop/filede
 pzmods add-workshop-item --manifest sample-manifest/collection.json --item "https://steamcommunity.com/sharedfiles/filedetails?id=3635591071"
 ```
 
+2.1. Добавить целую коллекцию в существующий манифест (без дубликатов):
+
+```powershell
+pzmods merge-collection --manifest sample-manifest/collection.json --collection "https://steamcommunity.com/workshop/filedetails?id=3652192243"
+```
+
 3. Сгенерировать манифест на основе уже установленных локально модов:
 
 ```powershell
 pzmods generate-manifest --out sample-manifest/from-installed.json
 ```
+
 4. Засинковать моды:
+
 ```powershell
 .\pzmods.cmd sync --manifest "sample-manifest\pz-modpack.json" --steamcmd "D:\steamcmd\steamcmd.exe" --steam-user ВАШ_ЛОГИН_STEAM
 ```
+
+По умолчанию в `mods_to_enable` попадут только ModID, которые удалось сопоставить с Workshop item ID.
+Если нужно добавить и локальные/несопоставленные моды, используйте флаг `--include-unmatched-modids`.
+
 ## Примечания
 
 - По умолчанию используется режим установки `copy` (чтобы избежать проблем с правами на symlink в Windows).
 - Режим `symlink` — опционально для продвинутых пользователей.
 - Повторный запуск `sync` идемпотентен: неизменённые моды пропускаются.
+- Для ускорения повторной синхронизации используйте `--download-mode missing-only` (SteamCMD запускается только для отсутствующих workshop item).
+- `--download-mode none` полностью пропускает шаг SteamCMD и использует уже скачанный кэш.
 
 ## Частые пути (Windows)
 

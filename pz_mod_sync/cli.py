@@ -15,6 +15,7 @@ from .collection import (
 from .config import UserConfig, load_user_config, save_user_config
 from .generate import generate_manifest_from_installed
 from .logging_utils import report_to_json, setup_logging
+from .manifest_utils import merge_workshop_items
 from .manifest import ManifestError, load_manifest
 from .paths import detect_app_data_dir, detect_pz_user_dir, detect_steamcmd_path, workshop_dir_from_steamcmd
 from .sync import run_doctor, run_sync, run_validate
@@ -31,6 +32,12 @@ def build_parser() -> argparse.ArgumentParser:
     sync_cmd.add_argument("--pzdir", default="", help="Project Zomboid user dir override")
     sync_cmd.add_argument("--cache", default="", help="Workshop content dir override")
     sync_cmd.add_argument("--install-mode", choices=["copy", "symlink"], default="", help="Install mode override")
+    sync_cmd.add_argument(
+        "--download-mode",
+        choices=["always", "missing-only", "none"],
+        default="always",
+        help="SteamCMD behavior: always update all, only missing items, or skip download step",
+    )
 
     validate_cmd = sub.add_parser("validate", help="Validate required ModIDs are present")
     validate_cmd.add_argument("--manifest", required=True, help="Manifest path or HTTPS URL")
@@ -47,6 +54,10 @@ def build_parser() -> argparse.ArgumentParser:
     coll_cmd.add_argument("--out", default="pz-modpack.generated.json", help="Output manifest path")
     coll_cmd.add_argument("--name", default="Generated from Steam Collection", help="Manifest display name")
 
+    merge_coll_cmd = sub.add_parser("merge-collection", help="Append collection workshop items into existing local manifest")
+    merge_coll_cmd.add_argument("--manifest", required=True, help="Local manifest JSON path")
+    merge_coll_cmd.add_argument("--collection", required=True, help="Collection URL or ID")
+
     add_item_cmd = sub.add_parser("add-workshop-item", help="Append a Steam Workshop item URL/ID to local manifest")
     add_item_cmd.add_argument("--manifest", required=True, help="Local manifest JSON path")
     add_item_cmd.add_argument("--item", required=True, help="Workshop item URL or ID")
@@ -57,6 +68,11 @@ def build_parser() -> argparse.ArgumentParser:
     gen_cmd.add_argument("--pzdir", default="", help="Project Zomboid user dir override")
     gen_cmd.add_argument("--cache", default="", help="Workshop content dir override")
     gen_cmd.add_argument("--app-id", default=108600, type=int, help="Steam app id (default: 108600)")
+    gen_cmd.add_argument(
+        "--include-unmatched-modids",
+        action="store_true",
+        help="Also include local ModIDs that could not be mapped to Workshop items",
+    )
     return parser
 
 
@@ -104,6 +120,7 @@ def cmd_sync(args: argparse.Namespace) -> int:
         steam_username=steam_user,
         install_mode=install_mode,
         logger=logger,
+        download_mode=args.download_mode,
     )
 
     config.steamcmd_path = str(steamcmd)
@@ -261,6 +278,65 @@ def cmd_add_workshop_item(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_merge_collection(args: argparse.Namespace) -> int:
+    manifest_path = Path(args.manifest).expanduser().resolve()
+    if not manifest_path.exists():
+        print(f"Manifest not found: {manifest_path}")
+        return 2
+
+    try:
+        collection_id = normalize_collection_id(args.collection)
+        item_ids = fetch_collection_children(collection_id)
+        titles = fetch_workshop_item_titles(item_ids)
+    except CollectionError as exc:
+        print(f"Collection error: {exc}")
+        return 2
+    except Exception as exc:
+        print(f"Collection fetch failed: {exc}")
+        return 2
+
+    try:
+        manifest_data = json.loads(manifest_path.read_text(encoding="utf-8"))
+    except Exception as exc:
+        print(f"Failed to read manifest JSON: {exc}")
+        return 2
+
+    incoming_items = [
+        {
+            "publishedfileid": item_id,
+            "display_name": titles.get(item_id, f"Workshop Item {item_id}"),
+        }
+        for item_id in item_ids
+    ]
+
+    steam_section = manifest_data.setdefault("steamcmd", {})
+    steam_section.setdefault("app_id", 108600)
+    existing = steam_section.setdefault("workshop_items", [])
+    merged, added = merge_workshop_items(existing, incoming_items)
+    steam_section["workshop_items"] = merged
+
+    manifest_data.setdefault("version", "1")
+    manifest_data.setdefault("name", "PZ Modpack")
+    manifest_data.setdefault("updated_at", "")
+    manifest_data.setdefault("project_zomboid", {}).setdefault("mods_to_enable", ["REPLACE_WITH_REAL_MODIDS_AFTER_SYNC"])
+    manifest_data.setdefault(
+        "install",
+        {
+            "mode": "copy",
+            "pz_user_dir_override": "",
+            "allow_extra_local_mods": True,
+        },
+    )
+
+    manifest_path.write_text(json.dumps(manifest_data, ensure_ascii=False, indent=2), encoding="utf-8")
+    print(f"Collection ID: {collection_id}")
+    print(f"Collection items fetched: {len(item_ids)}")
+    print(f"Added to manifest: {added}")
+    print(f"Total workshop items in manifest: {len(merged)}")
+    print(f"Manifest updated: {manifest_path}")
+    return 0
+
+
 def cmd_generate_manifest(args: argparse.Namespace) -> int:
     app_data_dir = detect_app_data_dir()
     config = load_user_config(app_data_dir)
@@ -283,6 +359,7 @@ def cmd_generate_manifest(args: argparse.Namespace) -> int:
         workshop_content_dir=workshop_dir,
         name=args.name,
         app_id=args.app_id,
+        include_unmatched_modids=bool(args.include_unmatched_modids),
     )
 
     if not data.installed_modids:
@@ -294,6 +371,7 @@ def cmd_generate_manifest(args: argparse.Namespace) -> int:
     out_path.write_text(json.dumps(data.manifest, ensure_ascii=False, indent=2), encoding="utf-8")
 
     print(f"Installed ModIDs: {len(data.installed_modids)}")
+    print(f"Matched ModIDs: {len(data.matched_modids)}")
     print(f"Mapped workshop items: {len(data.workshop_item_ids)}")
     if data.unmatched_modids:
         print(f"Unmatched local ModIDs (likely local/non-workshop mods): {len(data.unmatched_modids)}")
@@ -317,6 +395,8 @@ def main(argv: list[str] | None = None) -> int:
         return cmd_parse_collection(args)
     if args.command == "add-workshop-item":
         return cmd_add_workshop_item(args)
+    if args.command == "merge-collection":
+        return cmd_merge_collection(args)
     if args.command == "generate-manifest":
         return cmd_generate_manifest(args)
 

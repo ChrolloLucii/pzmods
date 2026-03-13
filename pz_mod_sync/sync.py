@@ -9,6 +9,16 @@ from .models import SyncReport
 from .steamcmd import run_steamcmd_download
 
 
+def _workshop_item_present(item_dir: Path) -> bool:
+    if not item_dir.exists() or not item_dir.is_dir():
+        return False
+    try:
+        next(item_dir.rglob("mod.info"))
+        return True
+    except StopIteration:
+        return False
+
+
 def run_sync(
     manifest: Manifest,
     steamcmd_exe: Path,
@@ -17,17 +27,31 @@ def run_sync(
     steam_username: str,
     install_mode: str,
     logger: logging.Logger,
+    download_mode: str = "always",
 ) -> SyncReport:
     report = SyncReport()
 
-    logger.info("Starting SteamCMD download/update...")
-    run_steamcmd_download(
-        steamcmd_exe=steamcmd_exe,
-        app_id=manifest.steamcmd.app_id,
-        items=manifest.steamcmd.workshop_items,
-        steam_username=steam_username,
-    )
-    report.downloaded_items = [item.publishedfileid for item in manifest.steamcmd.workshop_items]
+    items_to_download = manifest.steamcmd.workshop_items
+    if download_mode == "missing-only":
+        items_to_download = [
+            item
+            for item in manifest.steamcmd.workshop_items
+            if not _workshop_item_present(workshop_content_dir / item.publishedfileid)
+        ]
+    elif download_mode == "none":
+        items_to_download = []
+
+    if items_to_download:
+        logger.info("Starting SteamCMD download/update for %s items...", len(items_to_download))
+        run_steamcmd_download(
+            steamcmd_exe=steamcmd_exe,
+            app_id=manifest.steamcmd.app_id,
+            items=items_to_download,
+            steam_username=steam_username,
+        )
+        report.downloaded_items = [item.publishedfileid for item in items_to_download]
+    else:
+        logger.info("Skipping SteamCMD download step (download_mode=%s).", download_mode)
 
     logger.info("Installing mods into %s", pz_mods_dir)
     for item in manifest.steamcmd.workshop_items:
@@ -41,9 +65,15 @@ def run_sync(
             report.warnings.append(f"No mod.info files found in workshop item {item.publishedfileid}")
             continue
 
-        for _, source_mod_dir in found_mods:
+        for mod_id, source_mod_dir in found_mods:
             try:
-                changed, modid = install_mod_folder(source_mod_dir, pz_mods_dir, mode=install_mode)
+                changed, modid = install_mod_folder(
+                    source_mod_dir,
+                    pz_mods_dir,
+                    mode=install_mode,
+                    mod_id_override=mod_id,
+                    workshop_item_id=item.publishedfileid,
+                )
                 if changed:
                     report.installed_mods.append(modid)
                 else:
