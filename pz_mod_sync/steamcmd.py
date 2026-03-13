@@ -22,7 +22,24 @@ def _run_steamcmd_once(
 ) -> int:
     cmd = [str(steamcmd_exe), *build_workshop_download_args(app_id, items, steam_username)]
     proc = subprocess.Popen(cmd)
-    return proc.wait()
+    try:
+        return proc.wait()
+    except KeyboardInterrupt as exc:
+        try:
+            proc.terminate()
+        except Exception:
+            pass
+        raise SteamCmdError("SteamCMD interrupted by user.") from exc
+
+
+def _format_exit_code(code: int) -> str:
+    if code < 0:
+        return str(code)
+    return f"{code} (0x{code:08X})"
+
+
+def _looks_like_windows_crash(code: int) -> bool:
+    return code >= 0xC0000000
 
 
 def build_workshop_download_args(app_id: int, items: list[WorkshopItem], steam_username: str) -> list[str]:
@@ -45,27 +62,31 @@ def run_steamcmd_download(
     # Large one-shot command lines can make SteamCMD unstable on some systems.
     # Download in batches to reduce crashes and improve reliability.
     batch_size = 20
-    failed_batches: list[list[WorkshopItem]] = []
+    failed_batches: list[tuple[list[WorkshopItem], int]] = []
 
     for batch in _chunks(items, batch_size):
         code = _run_steamcmd_once(steamcmd_exe, app_id, batch, steam_username)
         if code != 0:
-            failed_batches.append(batch)
+            failed_batches.append((batch, code))
 
     if not failed_batches:
         return
 
-    # Retry failed batches item-by-item to recover from transient SteamCMD crashes.
-    failed_item_ids: list[str] = []
-    last_code: int | None = None
-    for batch in failed_batches:
-        for item in batch:
-            code = _run_steamcmd_once(steamcmd_exe, app_id, [item], steam_username)
-            if code != 0:
-                failed_item_ids.append(item.publishedfileid)
-                last_code = code
+    # Retry each failed batch once. Avoid item-by-item relaunch loops that can
+    # repeatedly trigger Steam login/guard prompts and appear to hang.
+    final_failed: list[tuple[list[WorkshopItem], int]] = []
+    for batch, first_code in failed_batches:
+        retry_code = _run_steamcmd_once(steamcmd_exe, app_id, batch, steam_username)
+        if retry_code != 0:
+            final_failed.append((batch, retry_code))
+        elif _looks_like_windows_crash(first_code):
+            # Crash recovered on retry; continue.
+            continue
 
-    if failed_item_ids:
+    if final_failed:
+        failed_ids = [item.publishedfileid for batch, _ in final_failed for item in batch]
+        last_code = final_failed[-1][1]
         raise SteamCmdError(
-            f"SteamCMD failed for {len(failed_item_ids)} item(s), last status {last_code}, ids={','.join(failed_item_ids)}"
+            "SteamCMD failed after retry. "
+            f"last status={_format_exit_code(last_code)}; failed_items={len(failed_ids)}; ids={','.join(failed_ids)}"
         )
