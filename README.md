@@ -57,6 +57,26 @@ $env:Path = "$PWD\.venv\Scripts;$env:Path"
 pzmods doctor
 ```
 
+4) Запуск GUI:
+
+```powershell
+.\pzmods-gui.cmd
+```
+
+Почему не `.exe` по умолчанию:
+- проект распространяется как исходники Python (проще обновлять и отлаживать);
+- но можно собрать единый exe-файл для друзей.
+
+Сборка GUI в `.exe`:
+
+```powershell
+.\build-gui-exe.cmd
+```
+
+Результат: `dist\pzmods-gui.exe`.
+
+Для друзей можно отправлять только `dist\pzmods-gui.exe` — им не нужны `.cmd`, Python и venv.
+
 ## Команды
 
 ```text
@@ -68,6 +88,7 @@ pzmods parse-collection --collection <url_or_id> [--out pz-modpack.generated.jso
 pzmods add-workshop-item --manifest <local_manifest.json> --item <workshop_url_or_id>
 pzmods merge-collection --manifest <local_manifest.json> --collection <url_or_id>
 pzmods generate-manifest [--out pz-modpack.from-installed.json] [--name "..."] [--pzdir <path>] [--cache <path>] [--app-id 108600] [--include-unmatched-modids]
+pzmods gui
 ```
 
 ## Формат манифеста

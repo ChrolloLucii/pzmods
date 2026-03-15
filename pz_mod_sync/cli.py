@@ -78,6 +78,8 @@ def build_parser() -> argparse.ArgumentParser:
         action="store_true",
         help="Also include local ModIDs that could not be mapped to Workshop items",
     )
+
+    sub.add_parser("gui", help="Launch graphical interface")
     return parser
 
 
@@ -405,6 +407,10 @@ def main(argv: list[str] | None = None) -> int:
         return cmd_merge_collection(args)
     if args.command == "generate-manifest":
         return cmd_generate_manifest(args)
+    if args.command == "gui":
+        from .gui import launch_gui
+
+        return launch_gui()
 
     parser.print_help()
     return 2
